@@ -20,10 +20,7 @@ app.get('/', (req, res) => {        //get requests to the root ("/") will route 
     res.send("user");      //server responds by sending the index.html file to the client's browser
                                                         //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
 });
-app.get('/user', (req, res) => {        //get requests to the root ("/") will route here
-    res.send("hello");      //server responds by sending the index.html file to the client's browser
-                                                        //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
-});
+
 
 
 const uri = `mongodb+srv://parking-lot:zMRSytRoK1wKcGRr@cluster0.kvzsn.mongodb.net/?retryWrites=true&w=majority`;
