@@ -16,10 +16,10 @@ app.use(express.json());
 //Save the port number where your server will be listening
 
 //Idiomatic expression in express to route and respond to a client request
-app.get('/', (req, res) => {        //get requests to the root ("/") will route here
-    res.send("user");      //server responds by sending the index.html file to the client's browser
-                                                        //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
-});
+// app.get('/', (req, res) => {        //get requests to the root ("/") will route here
+//     res.send("user");      //server responds by sending the index.html file to the client's browser
+//                                                         //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
+// });
 
 
 
@@ -78,7 +78,7 @@ async function run() {
     //     res.json(result);
     // })
 
-    app.get('/users', async (req, res) => {
+    app.get('/', async (req, res) => {
         const cursor = usersCollection.find({});
         const users = await cursor.toArray();
         res.send(users);
