@@ -96,11 +96,23 @@ async function run() {
         const database = client.db('parking_lot');
         const usersCollection = database.collection('users');
         const locationCollection = database.collection('locations');
+        const hostCollection = database.collection('hosts');
     
     app.get('/users/:email', async (req, res) => {
+        
         const email = req.params.email;
         const query = { email:email };
         const user = await usersCollection.findOne(query);
+        console.log(email)
+        res.send(user)
+       
+    })
+    app.get('/hosts/:email', async (req, res) => {
+        
+        const email = req.params.email;
+        const query = { email:email };
+        const user = await hostCollection.findOne(query);
+        console.log(email)
         res.send(user)
        
     })
@@ -108,6 +120,12 @@ async function run() {
     app.post('/users', async (req, res) => {
         const user = req.body;
         const result = await usersCollection.insertOne(user);
+        res.json(result);
+        console.log(req.body)
+    });
+    app.post('/hosts', async (req, res) => {
+        const host = req.body;
+        const result = await hostCollection.insertOne(host);
         res.json(result);
         console.log(req.body)
     });
@@ -133,11 +151,12 @@ async function run() {
         res.send(location);
         // console.log(users)
     })
+  
     app.get('/locations/:location', async (req, res) => {
        
         const location = req.params.location;
         const query = { location:location };
-        const user = await locationCollection.findOne(query);
+        const user = await locationCollection.find(query);
         res.send(user)
         // console.log(users)
     })
@@ -156,7 +175,26 @@ async function run() {
             console.log(result);
             res.json(result);
         })
+
+        app.put('/users/admin', verifyToken, async (req, res) => {
+            const user = req.body;
+            const requester = req.decodedEmail;
+            if (requester) {
+                const requesterAccount = await usersCollection.findOne({ email: requester });
+                if (requesterAccount.role === 'admin') {
+                    const filter = { email: user.email };
+                    const updateDoc = { $set: { role: 'admin' } };
+                    const result = await usersCollection.updateOne(filter, updateDoc);
+                    res.json(result);
+                }
+            }
+            else {
+                res.status(403).json({ message: "You don't have the access for admin" });
+            }
+        })
+
     }
+
 finally {
     // await client.close();
 }
