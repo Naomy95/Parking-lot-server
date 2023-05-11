@@ -3,10 +3,8 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
-// const redis=require("redis")
-// const util=require("util")
-// const admin = require("firebase-admin");
-const ObjectId = require('mongodb').ObjectId;            //Instantiate an express app, the main work horse of this server
+
+const ObjectId = require('mongodb').ObjectId;            
 const port=process.env.PORT || 5000   
 
 // const redisURL="redis://127.0.0.1:6379" 
@@ -90,155 +88,155 @@ client.connect(err=>{
 //     next();
 // }
 
-async function run() {
-    try {
-        await client.connect();
-        const database = client.db('parking_lot');
-        const usersCollection = database.collection('users');
-        const userCollection = database.collection('user');
-        const locationCollection = database.collection('locations');
-        const hostCollection = database.collection('hosts');
-        const seatCollection = database.collection('Seats');
+// async function run() {
+//     try {
+//         await client.connect();
+//         const database = client.db('parking_lot');
+//         const usersCollection = database.collection('users');
+//         const userCollection = database.collection('user');
+//         const locationCollection = database.collection('locations');
+//         const hostCollection = database.collection('hosts');
+//         const seatCollection = database.collection('Seats');
     
-    app.get('/user/:email', async (req, res) => {
+//     app.get('/user/:email', async (req, res) => {
         
-        const email = req.params.email;
-        const query = { email:email };
-        const user = await userCollection.findOne(query);
-        console.log(email)
-        res.send(user)
+//         const email = req.params.email;
+//         const query = { email:email };
+//         const user = await userCollection.findOne(query);
+//         console.log(email)
+//         res.send(user)
        
-    })
-    app.put('/user/:email', async (req, res) => {
-        const user = req.body;
-        const filter = { email: user.email };
-        const options = { upsert: true };
-        const updateDoc = { $set: user };
-        const result = await userCollection.updateOne(filter, updateDoc, options);
-        res.json(result);
-        console.log(req.body)
-    })
-    app.get('/hosts/:email', async (req, res) => {
+//     })
+//     app.put('/user/:email', async (req, res) => {
+//         const user = req.body;
+//         const filter = { email: user.email };
+//         const options = { upsert: true };
+//         const updateDoc = { $set: user };
+//         const result = await userCollection.updateOne(filter, updateDoc, options);
+//         res.json(result);
+//         console.log(req.body)
+//     })
+//     app.get('/hosts/:email', async (req, res) => {
         
-        const email = req.params.email;
-        const query = { email:email };
-        const user = await hostCollection.findOne(query);
-        console.log(email)
-        res.send(user)
+//         const email = req.params.email;
+//         const query = { email:email };
+//         const user = await hostCollection.findOne(query);
+//         console.log(email)
+//         res.send(user)
        
-    })
+//     })
 
-    app.post('/users', async (req, res) => {
-        const user = req.body;
-        const result = await usersCollection.insertOne(user);
-        res.json(result);
-        console.log(req.body)
-    });
-    app.post('/hosts', async (req, res) => {
-        const host = req.body;
-        console.log(host)
-        // const result = await hostCollection.insertOne(host);
-        // res.json(result);
-        // console.log(req.body)
-    });
-    app.post('/seats', async (req, res) => {
-        console.log(req.body)
-        const host = req.body;
-        const result = await seatCollection.insertOne(host);
-        res.json(result);
+//     app.post('/users', async (req, res) => {
+//         const user = req.body;
+//         const result = await usersCollection.insertOne(user);
+//         res.json(result);
+//         console.log(req.body)
+//     });
+//     app.post('/hosts', async (req, res) => {
+//         const host = req.body;
+//         console.log(host)
+//         // const result = await hostCollection.insertOne(host);
+//         // res.json(result);
+//         // console.log(req.body)
+//     });
+//     app.post('/seats', async (req, res) => {
+//         console.log(req.body)
+//         const host = req.body;
+//         const result = await seatCollection.insertOne(host);
+//         res.json(result);
        
-    });
-    app.get('/seats/:name', async (req, res) => {
-        const name = req.params.name;
-        const query = { name:name };
-        const user = await seatCollection.findOne(query);
-        console.log(name)
-        res.send(user)
+//     });
+//     app.get('/seats/:name', async (req, res) => {
+//         const name = req.params.name;
+//         const query = { name:name };
+//         const user = await seatCollection.findOne(query);
+//         console.log(name)
+//         res.send(user)
        
-    });
+//     });
 
-    app.put('/locations/:name', async (req, res) => {
-        const location = req.body;
-        const filter = { name: location.name };
-        const options = { upsert: true };
-        const updateDoc = { $set: location };
-        const result = await locationCollection.updateOne(filter, updateDoc, options);
-        res.json(result);
-        console.log(req.body)
-    })
-    app.post('/user', async (req, res) => {
-        const user = req.body;
-        const filter = { email: user.email };
-        const options = { upsert: true };
-        const updateDoc = { $push: {vehicles:user.info} };
-        const result = await userCollection.updateOne(filter, updateDoc, options);
-        res.json(result);
-        console.log(user)
-    })
+//     app.put('/locations/:name', async (req, res) => {
+//         const location = req.body;
+//         const filter = { name: location.name };
+//         const options = { upsert: true };
+//         const updateDoc = { $set: location };
+//         const result = await locationCollection.updateOne(filter, updateDoc, options);
+//         res.json(result);
+//         console.log(req.body)
+//     })
+//     app.post('/user', async (req, res) => {
+//         const user = req.body;
+//         const filter = { email: user.email };
+//         const options = { upsert: true };
+//         const updateDoc = { $push: {vehicles:user.info} };
+//         const result = await userCollection.updateOne(filter, updateDoc, options);
+//         res.json(result);
+//         console.log(user)
+//     })
  
 
-    app.get('/users', async (req, res) => {
-        const cursor = usersCollection.find({});
-        const users = await cursor.toArray();
-        res.send(users);
-        console.log(users)
-    })
-    app.get('/locations', async (req, res) => {
-        const cursor = locationCollection.find({});
-        const location = await cursor.toArray();
-        res.send(location);
-        // console.log(users)
-    })
+//     app.get('/users', async (req, res) => {
+//         const cursor = usersCollection.find({});
+//         const users = await cursor.toArray();
+//         res.send(users);
+//         console.log(users)
+//     })
+//     app.get('/locations', async (req, res) => {
+//         const cursor = locationCollection.find({});
+//         const location = await cursor.toArray();
+//         res.send(location);
+//         // console.log(users)
+//     })
   
-    app.get('/locations/:name', async (req, res) => {
+//     app.get('/locations/:name', async (req, res) => {
        
-        const name = req.params.name;
-        const query = { name:name };
-        const user = await locationCollection.findOne(query);
-        res.send(user)
-        console.log(user)
-    })
-    app.post('/insert/newLocation', async (req, res) => {
-        const location = req.body;
-        const result = await locationCollection.insertOne(location);
-        res.json(result);
-        console.log(req.body)
-    });
-            app.delete('/users/:id', async (req, res) => {
-            const id = req.params.id;
-            console.log(id);
-            const query = { _id: ObjectId(id) };
-            console.log(query);
-            const result = await usersCollection.deleteOne(query);
-            console.log(result);
-            res.json(result);
-        })
+//         const name = req.params.name;
+//         const query = { name:name };
+//         const user = await locationCollection.findOne(query);
+//         res.send(user)
+//         console.log(user)
+//     })
+//     app.post('/insert/newLocation', async (req, res) => {
+//         const location = req.body;
+//         const result = await locationCollection.insertOne(location);
+//         res.json(result);
+//         console.log(req.body)
+//     });
+//             app.delete('/users/:id', async (req, res) => {
+//             const id = req.params.id;
+//             console.log(id);
+//             const query = { _id: ObjectId(id) };
+//             console.log(query);
+//             const result = await usersCollection.deleteOne(query);
+//             console.log(result);
+//             res.json(result);
+//         })
 
-        app.put('/users/admin', verifyToken, async (req, res) => {
-            const user = req.body;
-            const requester = req.decodedEmail;
-            if (requester) {
-                const requesterAccount = await usersCollection.findOne({ email: requester });
-                if (requesterAccount.role === 'admin') {
-                    const filter = { email: user.email };
-                    const updateDoc = { $set: { role: 'admin' } };
-                    const result = await usersCollection.updateOne(filter, updateDoc);
-                    res.json(result);
-                }
-            }
-            else {
-                res.status(403).json({ message: "You don't have the access for admin" });
-            }
-        })
+//         app.put('/users/admin', verifyToken, async (req, res) => {
+//             const user = req.body;
+//             const requester = req.decodedEmail;
+//             if (requester) {
+//                 const requesterAccount = await usersCollection.findOne({ email: requester });
+//                 if (requesterAccount.role === 'admin') {
+//                     const filter = { email: user.email };
+//                     const updateDoc = { $set: { role: 'admin' } };
+//                     const result = await usersCollection.updateOne(filter, updateDoc);
+//                     res.json(result);
+//                 }
+//             }
+//             else {
+//                 res.status(403).json({ message: "You don't have the access for admin" });
+//             }
+//         })
 
-    }
+//     }
 
-finally {
-    // await client.close();
-}
-}
+// finally {
+//     // await client.close();
+// }
+// }
 
-run().catch(err=>console.log(err));
+// run().catch(err=>console.log(err));
 
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
     console.log(`Now listening on port ${port}`); 
